@@ -8,8 +8,10 @@ with open('config.yaml', 'r') as file:
 
 
 sra_info_file = config_args['sra_info_file']
+data_dir = config_args['data_'dir']
 experiment_name = config_args['experiment_name']
-vcf_file = 'data/vcf_merged_'+experiment_name+'.txt'
+vcf_file = 'output/vcf_merged_'+experiment_name+'.txt'
+
 df = pd.read_csv(vcf_file, sep='\t', lineterminator='\n')
 df.columns = ['chrom','start','end','length','seq','species']
 df = df[df['length']!='.']
@@ -52,21 +54,22 @@ def writeBed(fasta_file, bed_file):
 peaks = [246]
 
 #need to specify species in output
-bashCommand = "mkdir -p output"
+bashCommand = "mkdir -p " + data_dir + '/peaks/'
 process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 output, error = process.communicate()
 
 for peak in peaks:
-	bashCommand = 'mkdir -p output/'+str(peak)
+	bashCommand = 'mkdir -p '+ data_dir + '/peaks/' +str(peak)
 	process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 	output, error = process.communicate()
+	peak_dir =  data_dir + '/peaks/' + str(peak) + '/'
 
 	df_peak = df[(df['length'] >= int(peak)) & (df['length'] <= int(peak))]
 	df_peak = df_peak[df_peak['length']!='.']
 	df_peak = df_peak.drop_duplicates(subset=['chrom','start','end'], keep='first')
 
-	fasta_file = 'output/'+str(peak)+'/insertion_'+str(peak)+'.txt'
-	bed_file =  'output/'+str(peak)+'/insertion_'+str(peak)+'.bed'
+	fasta_file = peak_dir + insertion_'+str(peak)+'.txt'
+	bed_file =  peak_dir + insertion_'+str(peak)+'.bed'
 	writeFasta(df_peak, fasta_file)
 	writeBed(fasta_file, bed_file)
 

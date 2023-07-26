@@ -1,5 +1,12 @@
 sra_info_file:
      "/Users/DBurke/Documents/Layerlab/sv_analysis/horse/horse_sra_simple.csv"
 
+data_dir:
+    "/scratch/Shares/layer/workspace/devin_sra/TE_pipeline/output/"
+
 experiment_name:
      "horse"
+
+multibreed_study:
+     "True"
+

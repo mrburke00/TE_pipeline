@@ -1,25 +1,26 @@
 #!/bin/bash
+experiment_name=$(cat /scratch/Shares/layer/workspace/devin_sra/TE_pipeline/config.yaml | shyaml get-value experiment_name)
+data_dir=$(cat /scratch/Shares/layer/workspace/devin_sra/TE_pipeline/config.yaml | shyaml get-value data_dir)
 
-animal="horse"
 
-input="../sv_results/sra_runinfos/"${animal}"_sraRuns.txt"
-home="/scratch/Shares/layer/workspace/devin_sra/sv_step/sv_results"
+input="data/"${experiment_name}"_sraRuns.txt"
 
 peaks=("246")
 
-peaks=("$@")
+#peaks=("$@")
 for i in "${!peaks[@]}"; do
-	echo "${peaks[i]}"
-	
+	echo "${peaks[i]}"	
 
-	for j in "${!sra_examples[@]}"; do
-		echo "${sra_examples[j]}"
-		echo "${sra_examples[j]}" >> v2output_sep1.txt
+	while read sra_example; do
+		#echo "${sra_example}"
 
-		input="output/"${peaks[i]}"/insertion_"${peaks[i]}".bed"
-		output="output/"${peaks[i]}"/population_insertion_"${peaks[i]}".txt"
-		bedtools intersect -a "${sra_examples[j]}"/out.pass.vcf -b $input >> $output
+		input=$data_dir/insertion_"${peaks[i]}".bed"
+		output=$data_dir/population_insertion_"${peaks[i]}".txt"
 
-	done
+		echo "${sra_example}" >> $output
+
+		bedtools intersect -a $data_dir/samples/"${sra_example}"/out.pass.vcf -b $input >> $output
+
+	done <$input
 	
 done
