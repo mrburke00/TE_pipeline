@@ -68,8 +68,8 @@ for peak in peaks:
 	df_peak = df_peak[df_peak['length']!='.']
 	df_peak = df_peak.drop_duplicates(subset=['chrom','start','end'], keep='first')
 
-	fasta_file = peak_dir + 'insertion_'+str(peak)+'.txt'
-	bed_file =  peak_dir + 'insertion_'+str(peak)+'.bed'
+	fasta_file = peak_dir + insertion_'+str(peak)+'.txt'
+	bed_file =  peak_dir + insertion_'+str(peak)+'.bed'
 	writeFasta(df_peak, fasta_file)
 	writeBed(fasta_file, bed_file)
 

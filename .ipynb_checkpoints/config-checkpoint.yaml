@@ -8,5 +8,5 @@ experiment_name:
      "horse"
 
 multibreed_study:
-     False
+     "False"
 

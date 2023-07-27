@@ -16,7 +16,8 @@ df.columns = ['chrom','start','end','length','seq','species']
 df = df[df['length']!='.']
 df['length'] = df['length'].astype(int)
 
-x = df['length']
+x = df['length'].tolist
+print(x)
 
 peaks, _ = find_peaks(x, height=0)
 
